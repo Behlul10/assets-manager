@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Vehicle extends Asset{
     private String makeModel;
@@ -37,11 +38,31 @@ public class Vehicle extends Asset{
     }
 
     @Override
-    public BigDecimal getValeu() {
-        BigDecimal reducedVal = BigDecimal.ZERO;
-        switch (this.year) {
-            this.year => 0 || this.year <3 -> reducedVal = 0.3;
-        }
-    }
+    public BigDecimal getValue() {
+        int currentYear = LocalDate.now().getYear();
+        int age = currentYear - this.year;
+        BigDecimal value = this.getOrigionalCost();
 
+        // Calculate depreciation based on age
+        if (age >= 0 && age <= 3) { // 3% reduction per year
+            BigDecimal reduction = value.multiply(BigDecimal.valueOf(0.03)).multiply(BigDecimal.valueOf(age));
+            value = value.subtract(reduction);
+        } else if (age >= 4 && age <= 6) { // 6% reduction per year
+            BigDecimal reduction = value.multiply(BigDecimal.valueOf(0.06)).multiply(BigDecimal.valueOf(age));
+            value = value.subtract(reduction);
+        } else if (age >= 7 && age <= 10) { // 8% reduction per year
+            BigDecimal reduction = value.multiply(BigDecimal.valueOf(0.08)).multiply(BigDecimal.valueOf(age));
+            value = value.subtract(reduction);
+        } else if (age > 10) { // Over 10 years old - value is $1000.00
+            value = new BigDecimal("1000.00");
+        }
+
+        // Apply mileage penalty
+        if (this.odometer > 100000 && !this.makeModel.contains("Honda") && !this.makeModel.contains("Toyota")) {
+            // Reduce final value by 25%
+            BigDecimal penalty = value.multiply(BigDecimal.valueOf(0.25));
+            value = value.subtract(penalty);
+        }
+        return value;
+    }
 }

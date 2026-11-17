@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class Asset {
     private String description;
@@ -8,6 +9,12 @@ public class Asset {
     public Asset(String description, String dateAcquired, BigDecimal origionalCost){
         this.description = description;
         this.dateAcquired = dateAcquired;
+        this.origionalCost = origionalCost;
+    }
+
+    public Asset(String description, BigDecimal origionalCost) {
+        this.description = description;
+        this.dateAcquired = LocalDate.now().toString();
         this.origionalCost = origionalCost;
     }
 
