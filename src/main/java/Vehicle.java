@@ -58,7 +58,7 @@ public class Vehicle extends Asset{
         }
 
         // Apply mileage penalty
-        if (this.odometer > 100000 && !this.makeModel.contains("Honda") && !this.makeModel.contains("Toyota")) {
+        if (this.odometer > 100000 && (!this.makeModel.contains("Honda") || !this.makeModel.contains("Toyota"))) {
             // Reduce final value by 25%
             BigDecimal penalty = value.multiply(BigDecimal.valueOf(0.25));
             value = value.subtract(penalty);
